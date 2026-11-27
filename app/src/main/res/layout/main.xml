@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="#0B0D12">
+
+    <LinearLayout
+        android:id="@+id/bar"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#12151D"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/btnHome"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Start"
+            android:src="@drawable/ic_home" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#F3EFE8"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/btnReload"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Neu laden"
+            android:src="@drawable/ic_reload" />
+
+        <ImageButton
+            android:id="@+id/btnBrowser"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Im Browser öffnen"
+            android:src="@drawable/ic_open" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/prog"
+        style="@android:style/Widget.Material.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:max="100"
+        android:progressTint="#FF4FA3"
+        android:progressBackgroundTint="#12151D"
+        android:visibility="gone" />
+
+    <WebView
+        android:id="@+id/web"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

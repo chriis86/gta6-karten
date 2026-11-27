@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GTA 6 Karten</title>
+<style>
+:root{--bg:#0b0d12;--card:#151924;--line:#262c3b;--ink:#f3efe8;--mut:#9aa3b4;--pink:#ff4fa3;--sun:#ffb347}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+header{padding:34px 20px 26px;background:linear-gradient(160deg,#ff4fa3 0%,#ff7a6b 45%,#ffb347 100%);color:#16070f;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;right:-40px;bottom:-60px;width:220px;height:220px;border-radius:50%;background:#16070f18}
+h1{font:800 38px/1 system-ui;margin:0;letter-spacing:-.02em;font-stretch:condensed}
+header p{margin:8px 0 0;font-weight:500;max-width:30em}
+main{padding:18px 16px 40px;max-width:640px;margin:0 auto}
+h2{font-size:14px;color:var(--mut);font-weight:600;margin:22px 4px 10px}
+.tile{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px;color:inherit;text-decoration:none;min-height:84px}
+.tile:active{transform:scale(.98);border-color:var(--pink)}
+.ic{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;flex:none;font:800 22px system-ui;color:#16070f}
+.tile b{display:block;font-size:18px}
+.tile small{color:var(--mut);font-size:14px}
+.tile .arr{margin-left:auto;color:var(--mut);font-size:22px}
+.own{position:relative}
+.del{position:absolute;right:10px;top:10px;border:0;background:#ffffff12;color:var(--mut);border-radius:10px;width:36px;height:36px;font-size:18px}
+form{background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:14px;display:grid;gap:10px}
+input{width:100%;font-size:16px;color:var(--ink);background:#0f121a;border:1px solid var(--line);border-radius:10px;padding:12px}
+button.add{min-height:46px;border:0;border-radius:10px;background:var(--pink);color:#16070f;font-weight:700;font-size:16px}
+.hint{color:var(--mut);font-size:13px;margin:18px 4px 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>GTA 6<br>Karten</h1>
+  <p>Alle interaktiven Leonida-Karten in einer App. Dein Fortschritt und Login bleiben gespeichert.</p>
+</header>
+<main>
+  <h2>Interaktive Karten</h2>
+  <div id="maps"></div>
+  <h2>Eigene Links</h2>
+  <div id="own"></div>
+  <form id="f">
+    <input id="n" placeholder="Name, z. B. Sammelobjekte-Guide" maxlength="40" required>
+    <input id="u" type="url" placeholder="https://…" required>
+    <button class="add">Link hinzufügen</button>
+  </form>
+  <p class="hint">Zurück-Taste führt zur vorherigen Seite, das Haus-Symbol oben zurück hierher. Anmelden klappt am besten per E-Mail, „Mit Google anmelden“ blockiert Google in Apps oft.</p>
+</main>
+<script>
+{
+const MAPS=[
+ {n:'MapGenie',d:'Leonida-Karte mit Sammelobjekten & Fortschritt',u:'https://mapgenie.io/grand-theft-auto-6/maps/leonida',c:'#ff4fa3',i:'MG'},
+ {n:'GTAbase',d:'Fast 1000 Orte in über 40 Kategorien',u:'https://www.gtabase.com/gta-6/map/',c:'#ffb347',i:'GB'},
+ {n:'State of Leonida',d:'Community-Karte mit Orten & Screenshot-Spots',u:'https://map.stateofleonida.net/',c:'#5fb3ff',i:'SL'}];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const tile=(m,i,own)=>`<div class="${own?'own':''}"><a class="tile" href="${esc(m.u)}"><span class="ic" style="background:${own?'#e9e4da':m.c}">${esc(own?m.n.slice(0,2).toUpperCase():m.i)}</span><span><b>${esc(m.n)}</b><small>${esc(own?m.u.replace(/^https?:\/\//,''):m.d)}</small></span>${own?'':'<span class="arr">›</span>'}</a>${own?`<button class="del" data-i="${i}" aria-label="Entfernen">×</button>`:''}</div>`;
+document.getElementById('maps').innerHTML=MAPS.map((m,i)=>tile(m,i,false)).join('');
+let own=[];try{own=JSON.parse(localStorage.getItem('own')||'[]')}catch(e){}
+const draw=()=>{document.getElementById('own').innerHTML=own.map((m,i)=>tile(m,i,true)).join('')};
+const store=()=>{try{localStorage.setItem('own',JSON.stringify(own))}catch(e){}};
+document.getElementById('own').onclick=e=>{const b=e.target.closest('.del');if(!b)return;own.splice(+b.dataset.i,1);store();draw()};
+document.getElementById('f').onsubmit=e=>{e.preventDefault();const n=document.getElementById('n'),u=document.getElementById('u');
+  if(!/^https?:\/\//i.test(u.value))return;own.push({n:n.value.trim(),u:u.value.trim()});store();draw();n.value='';u.value=''};
+draw();
+}
+</script>
+</body>
+</html>
